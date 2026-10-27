@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>This week’s bake</title>
+<style>
+  :root {
+    --bg: #f7f5f2;
+    --surface: #ffffff;
+    --text: #2b2825;
+    --muted: #6f6862;
+    --line: #e2ddd6;
+    --tomato: #a8261d;
+    --yolk: #f0b429;
+    --on-tomato: #fff7f0;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1d1b19;
+      --surface: #272421;
+      --text: #f1ece6;
+      --muted: #a39b93;
+      --line: #3a3632;
+      --tomato: #e0594b;
+      --on-tomato: #1d1b19;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 40rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .week { color: var(--muted); font-size: .95rem; margin: 0 0 .5rem; }
+  h1 {
+    font: 700 clamp(2.4rem, 9vw, 3.6rem)/1.05 "Iowan Old Style", Palatino, Georgia, serif;
+    color: var(--tomato);
+    margin: 0 0 1rem;
+    letter-spacing: -.01em;
+  }
+  .intro { margin: 0 0 .75rem; max-width: 34rem; }
+  .facts {
+    display: flex; flex-wrap: wrap; gap: .5rem 1.5rem;
+    margin: 1.5rem 0 0; padding: .9rem 0;
+    border-top: 2px solid var(--yolk); border-bottom: 1px solid var(--line);
+  }
+  .facts div { display: flex; flex-direction: column; }
+  .facts dt { font-size: .8rem; color: var(--muted); }
+  .facts dd { margin: 0; font-weight: 600; }
+  h2 { font: 700 1.35rem/1.2 "Iowan Old Style", Palatino, Georgia, serif; margin: 2.25rem 0 .75rem; }
+  .head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin: 2.25rem 0 .75rem; }
+  .head h2 { margin: 0; }
+  button.ghost { background: transparent; color: var(--tomato); padding: .35rem .9rem; font-size: .9rem; }
+  .ingredients { list-style: none; padding: 0; margin: 0; }
+  .ingredients li { border-bottom: 1px solid var(--line); }
+  .ingredients label { display: flex; gap: .75rem; padding: .55rem 0; cursor: pointer; }
+  .ingredients input { accent-color: var(--tomato); width: 1.1rem; height: 1.1rem; margin-top: .3rem; flex: none; }
+  .ingredients input:checked + span { color: var(--muted); text-decoration: line-through; }
+  .method { padding-left: 1.25rem; margin: 0; }
+  .method li { margin-bottom: .85rem; padding-left: .25rem; }
+  .method li::marker { color: var(--tomato); font-weight: 700; }
+  .source { margin: 0 0 1.25rem; color: var(--muted); font-size: .95rem; }
+  .source a, .photos a { color: var(--tomato); }
+  .actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+  button, .btn {
+    font: inherit; font-weight: 600; cursor: pointer; text-decoration: none;
+    padding: .75rem 1.25rem; border-radius: 999px; border: 2px solid var(--tomato);
+  }
+  button { background: var(--tomato); color: var(--on-tomato); }
+  .btn { color: var(--tomato); background: transparent; }
+  button:focus-visible, .btn:focus-visible, a:focus-visible, input:focus-visible {
+    outline: 3px solid var(--yolk); outline-offset: 2px;
+  }
+  .invite { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .75rem; }
+  .invite[hidden] { display: none; }
+  .invite textarea {
+    flex: 1 1 14rem; min-height: 5.5rem; resize: vertical;
+    font: inherit; color: var(--text); background: var(--surface);
+    border: 2px solid var(--line); border-radius: 12px; padding: .75rem;
+  }
+  .invite textarea:focus-visible { outline: 3px solid var(--yolk); outline-offset: 2px; }
+  .invite button { flex: 0 0 auto; min-width: 8rem; font-size: 1.15rem; border-radius: 12px; }
+  #status { min-height: 1.5rem; color: var(--muted); margin: .5rem 0 0; font-size: .95rem; }
+</style>
+</head>
+<body>
+<main id="app"></main>
+
+<script>
+  // One entry per week. "start" is the Monday the recipe goes live.
+  // To add a week: copy an entry, change the dates and the content.
+  const RECIPES = [
+    {
+      start: "2026-11-02",
+      category: "Brunch",
+      title: "Shakshuka with feta",
+      intro: "Eggs poached in a spiced tomato and pepper sauce, all in one pan. Quick enough for a weekend morning, and easy to scale up when friends are coming over.",
+      time: "40 minutes",
+      serves: "4",
+      ingredients: [
+        "60 ml (¼ cup) olive oil",
+        "1 large yellow onion, diced small",
+        "1 red bell pepper, diced small",
+        "1 tsp fine sea salt, divided",
+        "¼ tsp black pepper",
+        "8 cloves garlic, chopped",
+        "1 tsp ground cumin",
+        "1½ tsp sweet paprika",
+        "¼ tsp red pepper flakes",
+        "1 can (794 g / 28 oz) diced tomatoes, with their juices",
+        "85 g (3 oz) feta, crumbled",
+        "8 eggs",
+        "¼ cup chopped parsley or coriander",
+        "Crusty bread or pita, to serve"
+      ],
+      method: [
+        "Warm the oil in a large, deep frying pan that has a lid. Add the onion and pepper with half the salt and all the black pepper, and cook for about 5 minutes until they start to soften.",
+        "Stir in the garlic, cumin, paprika and chilli flakes and cook for 2 minutes more.",
+        "Add the tomatoes and the rest of the salt. Simmer for about 15 minutes, until the sauce has thickened.",
+        "Stir in the feta and turn the heat down to medium-low.",
+        "Make a small hollow in the sauce for each egg and crack one into each.",
+        "Cover and cook gently for 10 to 15 minutes, until the whites are set and the yolks are how you like them.",
+        "Scatter over the herbs and bring the pan straight to the table with bread for scooping."
+      ],
+      sourceName: "Umami Girl",
+      sourceUrl: "https://umamigirl.com/wprm_print/easy-shakshuka-recipe-with-feta"
+    }
+  ];
+
+  // Set this to a shared album for the week (Google Photos, iCloud, etc.).
+  const PHOTO_ALBUM_URL = "";
+
+  function pickRecipe(list, today) {
+    const sorted = [...list].sort((a, b) => a.start.localeCompare(b.start));
+    const iso = today.toISOString().slice(0, 10);
+    const current = sorted.filter(r => r.start <= iso).pop();
+    return current || sorted[0]; // before the first week, show a preview of it
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  }
+
+  function formatWeek(iso) {
+    const d = new Date(iso + "T00:00:00");
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
+  }
+
+  function render(r) {
+    document.title = r.title + " · This week’s bake";
+    const photos = PHOTO_ALBUM_URL
+      ? `<a class="btn" href="${esc(PHOTO_ALBUM_URL)}" target="_blank" rel="noopener">Add your photo</a>`
+      : "";
+    document.getElementById("app").innerHTML = `
+      <p class="week">${esc(r.category)} · week of ${esc(formatWeek(r.start))}</p>
+      <h1>${esc(r.title)}</h1>
+      <p class="intro">${esc(r.intro)}</p>
+      <p class="source">Recipe from <a href="${esc(r.sourceUrl)}" target="_blank" rel="noopener">${esc(r.sourceName)}</a>. Head there for the original, with photos and notes.</p>
+      <div class="actions">
+        <button id="share" type="button">Invite a friend to bake this</button>
+        ${photos}
+      </div>
+      <div class="invite" id="invite" hidden>
+        <textarea id="msg" aria-label="Message to send to a friend"></textarea>
+        <button id="copy" type="button">Copy</button>
+      </div>
+      <p id="status" role="status"></p>
+      <dl class="facts">
+        <div><dt>Time</dt><dd>${esc(r.time)}</dd></div>
+        <div><dt>Serves</dt><dd>${esc(r.serves)}</dd></div>
+      </dl>
+      <div class="head">
+        <h2>Ingredients</h2>
+        <button class="ghost" id="copyIng" type="button">Copy list</button>
+      </div>
+      <ul class="ingredients">
+        ${r.ingredients.map(i => `<li><label><input type="checkbox"><span>${esc(i)}</span></label></li>`).join("")}
+      </ul>
+      <h2>Method</h2>
+      <ol class="method">${r.method.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+    `;
+    document.getElementById("share").addEventListener("click", () => openInvite(r));
+    document.getElementById("copy").addEventListener("click", copyMessage);
+    document.getElementById("copyIng").addEventListener("click", () => {
+      const text = r.title + "\n" + r.ingredients.map(i => "- " + i).join("\n");
+      copyText(text, document.getElementById("copyIng"), "Copy list");
+    });
+  }
+
+  function openInvite(r) {
+    const panel = document.getElementById("invite");
+    const msg = document.getElementById("msg");
+    if (!msg.value) {
+      msg.value = "Come help me eat " + r.title + "! " + location.href.split("#")[0];
+    }
+    panel.hidden = false;
+    msg.focus();
+    msg.select();
+  }
+
+  async function copyText(text, btn, idle) {
+    let ok = true;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      const t = document.createElement("textarea");
+      t.value = text;
+      t.style.cssText = "position:fixed;opacity:0";
+      document.body.appendChild(t);
+      t.select();
+      ok = document.execCommand("copy");
+      t.remove();
+    }
+    btn.textContent = ok ? "Copied" : "Couldn’t copy";
+    setTimeout(() => { btn.textContent = idle; }, 2500);
+    return ok;
+  }
+
+  async function copyMessage() {
+    const ok = await copyText(document.getElementById("msg").value, document.getElementById("copy"), "Copy");
+    const status = document.getElementById("status");
+    status.textContent = ok ? "Copied. Paste it into any chat." : "Select the text and copy it manually.";
+    setTimeout(() => { status.textContent = ""; }, 2500);
+  }
+
+  render(pickRecipe(RECIPES, new Date()));
+</script>
+</body>
+</html>
