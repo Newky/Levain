@@ -3,93 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>This week’s bake</title>
-<style>
-  :root {
-    --bg: #f7f5f2;
-    --surface: #ffffff;
-    --text: #2b2825;
-    --muted: #6f6862;
-    --line: #e2ddd6;
-    --tomato: #a8261d;
-    --yolk: #f0b429;
-    --on-tomato: #fff7f0;
-    color-scheme: light;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #1d1b19;
-      --surface: #272421;
-      --text: #f1ece6;
-      --muted: #a39b93;
-      --line: #3a3632;
-      --tomato: #e0594b;
-      --on-tomato: #1d1b19;
-      color-scheme: dark;
-    }
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  }
-  main { max-width: 40rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .week { color: var(--muted); font-size: .95rem; margin: 0 0 .5rem; }
-  h1 {
-    font: 700 clamp(2.4rem, 9vw, 3.6rem)/1.05 "Iowan Old Style", Palatino, Georgia, serif;
-    color: var(--tomato);
-    margin: 0 0 1rem;
-    letter-spacing: -.01em;
-  }
-  .intro { margin: 0 0 .75rem; max-width: 34rem; }
-  .facts {
-    display: flex; flex-wrap: wrap; gap: .5rem 1.5rem;
-    margin: 1.5rem 0 0; padding: .9rem 0;
-    border-top: 2px solid var(--yolk); border-bottom: 1px solid var(--line);
-  }
-  .facts div { display: flex; flex-direction: column; }
-  .facts dt { font-size: .8rem; color: var(--muted); }
-  .facts dd { margin: 0; font-weight: 600; }
-  h2 { font: 700 1.35rem/1.2 "Iowan Old Style", Palatino, Georgia, serif; margin: 2.25rem 0 .75rem; }
-  .head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin: 2.25rem 0 .75rem; }
-  .head h2 { margin: 0; }
-  button.ghost { background: transparent; color: var(--tomato); padding: .35rem .9rem; font-size: .9rem; }
-  .ingredients { list-style: none; padding: 0; margin: 0; }
-  .ingredients li { border-bottom: 1px solid var(--line); }
-  .ingredients label { display: flex; gap: .75rem; padding: .55rem 0; cursor: pointer; }
-  .ingredients input { accent-color: var(--tomato); width: 1.1rem; height: 1.1rem; margin-top: .3rem; flex: none; }
-  .ingredients input:checked + span { color: var(--muted); text-decoration: line-through; }
-  .method { padding-left: 1.25rem; margin: 0; }
-  .method li { margin-bottom: .85rem; padding-left: .25rem; }
-  .method li::marker { color: var(--tomato); font-weight: 700; }
-  .source { margin: 0 0 1.25rem; color: var(--muted); font-size: .95rem; }
-  .source a, .photos a { color: var(--tomato); }
-  .actions { display: flex; flex-wrap: wrap; gap: .75rem; }
-  button, .btn {
-    font: inherit; font-weight: 600; cursor: pointer; text-decoration: none;
-    padding: .75rem 1.25rem; border-radius: 999px; border: 2px solid var(--tomato);
-  }
-  button { background: var(--tomato); color: var(--on-tomato); }
-  .btn { color: var(--tomato); background: transparent; }
-  button:focus-visible, .btn:focus-visible, a:focus-visible, input:focus-visible {
-    outline: 3px solid var(--yolk); outline-offset: 2px;
-  }
-  .invite { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .75rem; }
-  .invite[hidden] { display: none; }
-  .invite textarea {
-    flex: 1 1 14rem; min-height: 5.5rem; resize: vertical;
-    font: inherit; color: var(--text); background: var(--surface);
-    border: 2px solid var(--line); border-radius: 12px; padding: .75rem;
-  }
-  .invite textarea:focus-visible { outline: 3px solid var(--yolk); outline-offset: 2px; }
-  .invite button { flex: 0 0 auto; min-width: 8rem; font-size: 1.15rem; border-radius: 12px; }
-  #status { min-height: 1.5rem; color: var(--muted); margin: .5rem 0 0; font-size: .95rem; }
-</style>
+<title>Levain</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main id="app"></main>
+<main>
+  <div class="top"><a class="brand" href="/">Levain</a></div>
+  <header class="hero">
+    <p class="tagline">One weekly recipe to enjoy with friends.</p>
+    <p class="what">Levain picks one recipe a week, and everyone using Levain makes the same one. Your friends don’t need to be part of it: bake it on your own, or bring someone along.</p>
+    <ol class="steps">
+      <li>Make this week’s recipe, below.</li>
+      <li>Optional: invite a friend to bake it with you, or take it round to theirs.</li>
+      <li>Vote on what everyone makes next week.</li>
+    </ol>
+    <a class="btn" href="voting.html">Vote for next week</a>
+  </header>
+  <div id="app"></div>
+</main>
 
 <script>
   // One entry per week. "start" is the Monday the recipe goes live.
@@ -152,7 +83,7 @@
   }
 
   function render(r) {
-    document.title = r.title + " · This week’s bake";
+    document.title = r.title + " · Levain";
     const photos = PHOTO_ALBUM_URL
       ? `<a class="btn" href="${esc(PHOTO_ALBUM_URL)}" target="_blank" rel="noopener">Add your photo</a>`
       : "";
@@ -162,7 +93,7 @@
       <p class="intro">${esc(r.intro)}</p>
       <p class="source">Recipe from <a href="${esc(r.sourceUrl)}" target="_blank" rel="noopener">${esc(r.sourceName)}</a>. Head there for the original, with photos and notes.</p>
       <div class="actions">
-        <button id="share" type="button">Invite some friends to meet and eat</button>
+        <button id="share" type="button">Invite a friend to bake this</button>
         ${photos}
       </div>
       <div class="invite" id="invite" hidden>

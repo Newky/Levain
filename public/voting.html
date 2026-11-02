@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vote · Levain</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <div class="top"><a class="brand" href="/">Levain</a></div>
+  <h1 class="page">Vote for next week</h1>
+  <p class="vote-intro" id="intro"></p>
+  <p class="vote-note">For now, votes are only saved in this browser, so there’s no shared tally yet.</p>
+  <ul class="cands" id="cands"></ul>
+  <p id="status" role="status"></p>
+  <a class="back" href="/">Back to this week’s recipe</a>
+</main>
+
+<script>
+  // One option per category. "forWeek" is the Monday the winner goes live.
+  const VOTE = {
+    forWeek: "2026-11-09",
+    candidates: [
+      {
+        id: "parkin", category: "Dessert", title: "Parkin",
+        pitch: "A sticky, dense ginger cake made with oatmeal, treacle and golden syrup. It’s traditional around Bonfire Night and keeps well, so you can bake it ahead and take it round.",
+        sourceName: "Creamline",
+        sourceUrl: "https://www.creamline.co.uk/recipes/parkin"
+      },
+      {
+        id: "beef-casserole", category: "Dinner", title: "Beef casserole with herb dumplings",
+        pitch: "A slow, mostly hands-off casserole finished with herby dumplings. Serves 6, with about 2½ hours of cooking.",
+        sourceName: "Simply Beef & Lamb",
+        sourceUrl: "https://www.simplybeefandlamb.co.uk/recipes/easy-beef-casserole-with-herb-dumplings/"
+      },
+      {
+        id: "cinnamon-buns", category: "Brunch", title: "Cinnamon buns",
+        pitch: "Soft, fluffy iced buns written for UK home bakers, in grams. They need a few hours of proving, so they suit a slow weekend morning.",
+        sourceName: "Baking with Granny",
+        sourceUrl: "https://bakingwithgranny.co.uk/recipe/buns/cinnamon-buns-uk-recipe"
+      }
+    ]
+  };
+
+  const KEY = "levain:vote:" + VOTE.forWeek;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  }
+
+  function readVote() {
+    try { return localStorage.getItem(KEY); } catch (e) { return null; }
+  }
+
+  function saveVote(id) {
+    try { localStorage.setItem(KEY, id); return true; } catch (e) { return false; }
+  }
+
+  function weekLabel(iso) {
+    return new Date(iso + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" });
+  }
+
+  function render() {
+    const chosen = readVote();
+    document.getElementById("intro").textContent =
+      "Pick the bake you’d most like to make in the week of " + weekLabel(VOTE.forWeek) + ".";
+    document.getElementById("cands").innerHTML = VOTE.candidates.map(c => {
+      const mine = c.id === chosen;
+      return `
+        <li class="cand${mine ? " chosen" : ""}">
+          <span class="chip">${esc(c.category)}</span>
+          <h2>${esc(c.title)}</h2>
+          <p>${esc(c.pitch)}</p>
+          <div class="row">
+            <button type="button" data-id="${esc(c.id)}" aria-pressed="${mine}" class="${mine ? "ghost" : ""}">
+              ${mine ? "Your vote" : "Vote for this"}
+            </button>
+            <a href="${esc(c.sourceUrl)}" target="_blank" rel="noopener">See the recipe on ${esc(c.sourceName)}</a>
+          </div>
+        </li>`;
+    }).join("");
+  }
+
+  document.getElementById("cands").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-id]");
+    if (!btn) return;
+    const ok = saveVote(btn.dataset.id);
+    render();
+    document.getElementById("status").textContent = ok
+      ? "Vote saved. Tap another option to change it."
+      : "Couldn’t save your vote in this browser.";
+  });
+
+  render();
+</script>
+</body>
+</html>
