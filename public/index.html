@@ -60,6 +60,38 @@
       ],
       sourceName: "Umami Girl",
       sourceUrl: "https://umamigirl.com/wprm_print/easy-shakshuka-recipe-with-feta"
+    },
+    {
+      start: "2026-11-09",
+      category: "Dessert",
+      title: "Parkin",
+      intro: "A sticky, dark ginger cake made with oatmeal, treacle and golden syrup, traditional around Bonfire Night. It gets better with keeping, so bake it a few days ahead and take a slice round to a friend’s with a pot of tea.",
+      time: "1½ hours baking, plus at least a day to mature",
+      yieldLabel: "Makes",
+      serves: "One 20 cm square cake",
+      ingredients: [
+        "110 g soft butter",
+        "110 g soft dark brown sugar",
+        "55 g black treacle",
+        "200 g golden syrup",
+        "225 g medium oatmeal",
+        "110 g self-raising flour",
+        "2 tsp ground ginger",
+        "1 tsp ground mixed spice",
+        "2 medium eggs, beaten",
+        "1 tbsp milk",
+        "A pinch of salt"
+      ],
+      method: [
+        "Heat the oven to 140°C (120°C fan, gas 1). Grease and line a 20 cm square cake tin.",
+        "Melt the butter, sugar, treacle and golden syrup together in a pan over a gentle heat. Keep it low so the mixture doesn’t bubble, then take it off the heat and let it cool a little.",
+        "In a large bowl, mix the oatmeal, flour, ginger, mixed spice and salt, and make a well in the middle. Pour in the melted mixture and fold it together, then add the beaten eggs and milk and mix until combined.",
+        "Pour the batter into the tin and bake for about 1½ hours.",
+        "Leave the cake in the tin for 20 minutes, then turn it out onto a rack and let it cool completely.",
+        "Wrap it in greaseproof paper and keep it in a tin for at least a day, and up to a week, before cutting. This is what gives parkin its sticky texture."
+      ],
+      sourceName: "Creamline",
+      sourceUrl: "https://www.creamline.co.uk/recipes/parkin"
     }
   ];
 
@@ -103,7 +135,7 @@
       <p id="status" role="status"></p>
       <dl class="facts">
         <div><dt>Time</dt><dd>${esc(r.time)}</dd></div>
-        <div><dt>Serves</dt><dd>${esc(r.serves)}</dd></div>
+        <div><dt>${esc(r.yieldLabel || "Serves")}</dt><dd>${esc(r.serves)}</dd></div>
       </dl>
       <div class="head">
         <h2>Ingredients</h2>
